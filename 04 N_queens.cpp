@@ -64,7 +64,7 @@ class Solution {
       {
         if (isSafe1(row, col, board, n)) //check if that position is safe
         {
-          board[row][col] = 'Q';   //if safe,then backtrack!
+          board[row][col] = 'Q';   //if safe, place a queen
           solve(col + 1, board, ans, n);  //move to the next column...since in each column, we are checking for a safe position to place a queen
           board[row][col] = '.'; //since backtracked
         }
