@@ -35,23 +35,22 @@ using namespace std;
 
 bool isSafe(int board[N][N],int row, int col, int num) 
 { 
-	for (int d = 0; d < N; d++)  //already num is present in the same colums
+	for (int d = 0; d < N; d++)  //check if num is already present in the same column
 	{ 
 	    if (board[row][d] == num) 
 		return false; 
 	} 
 
-	for (int r = 0; r < N; r++)  
+	for (int r = 0; r < N; r++)  //check if num is already present in the same column
 	{ 
 	    if (board[r][col] == num)  
 		return false; 
 	}  
 	int s = (int)sqrt(N); 
-	int boxRowStart = row - row % s; 
-	int boxColStart = col - col % s; 
+	int boxRowStart = row - row % s; //IMP...sratring indices for the boxes in sudoku
+	int boxColStart = col - col % s; //IMP
 
-	for (int r = boxRowStart; 
-	     r < boxRowStart + s; r++)  
+	for (int r = boxRowStart; r < boxRowStart + s; r++)   // check if the num does NOT exist in the bos
 	{ 
 	    for (int d = boxColStart; d < boxColStart + s; d++)  
 	    { 
