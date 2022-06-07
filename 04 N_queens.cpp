@@ -15,11 +15,15 @@ class Solution {
   public:
     bool isSafe1(int row, int col, vector < string > board, int n) 
     {
-      // check upper element
+      //queen can move in 8 directions..so we had to check in all 8 directions...NO... logically, we have to check only for 3 of them
+      //the top and bottom in the same column are NOT checked, since in 1 column, we have only 1 queen
+      //everything on the right of it...do NOT check...since no queen placed there yet
+      //so we check only diagonal in the top left half, diagonal in the bottom left half and elements in the same row on the left
+      
       int duprow = row;
       int dupcol = col;
 
-      while (row >= 0 && col >= 0)  //checking for diagonal
+      while (row >= 0 && col >= 0)  //checking for diagonal in the top left half
       {
         if (board[row][col] == 'Q')
           return false;
@@ -29,7 +33,7 @@ class Solution {
 
       col = dupcol;
       row = duprow;
-      while (col >= 0) 
+      while (col >= 0) //checking in the same row on the left
       {
         if (board[row][col] == 'Q')
           return false;
@@ -38,7 +42,7 @@ class Solution {
 
       row = duprow;
       col = dupcol;
-      while (row < n && col >= 0) 
+      while (row < n && col >= 0) //checking for diagonal in the bottom left half
       {
         if (board[row][col] == 'Q')
           return false;
@@ -51,7 +55,7 @@ class Solution {
   public:
     void solve(int col, vector < string > & board, vector < vector < string >> & ans, int n) 
     {
-      if (col == n) //if we have successfully reaches PAST the last column (since we have col==n , not n-1...thus past the last column)
+      if (col == n) //base case //if we have successfully reaches PAST the last column (since we have col==n , not n-1...thus past the last column)
       {
         ans.push_back(board);
         return;
