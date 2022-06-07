@@ -33,13 +33,13 @@ bool solveMazeRec( int maze[N][N], int i, int j, int sol[N][N]) //main code
   
     if (isSafe(maze, i, j) == true) 
     { 
-        sol[i][j] = 1; 
-        if (solveMazeRec(maze, i + 1, j, sol) == true) 
+        sol[i][j] = 1; //update the solution matrix
+        if (solveMazeRec(maze, i + 1, j, sol) == true)  //only 1 path will be inside the solution matrix, because we are solving (i+1,j) before (i,j+1)
             return true;   
         if (solveMazeRec(maze, i, j + 1, sol) == true) 
             return true; 
   
-        sol[i][j] = 0; 
+        sol[i][j] = 0; //VVIMP....backtrack!!!....if we travel, and DO NOT reach the destination, then we make this zero!!!
     } 
     return false; 
 }
@@ -47,7 +47,7 @@ bool solveMazeRec( int maze[N][N], int i, int j, int sol[N][N]) //main code
  
 bool solveMaze(int maze[N][N]) 
 { 
-    int sol[N][N] = { { 0, 0, 0, 0 }, 
+    int sol[N][N] = { { 0, 0, 0, 0 }, //this will be the final soln, the path will be filled with 1's
                       { 0, 0, 0, 0 }, 
                       { 0, 0, 0, 0 }, 
                       { 0, 0, 0, 0 } }; 
