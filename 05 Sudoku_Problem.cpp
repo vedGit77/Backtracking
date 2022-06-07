@@ -4,6 +4,8 @@
 // 3. all columns should hv diff numbers
 // 4. every subgrid of size sqrt(n) must have diff numbers
 
+//Note: 0 in the cell means the cell is empty
+
 // example :
 // input = { {3, 0, 6, 5, 0, 8, 4, 0, 0}, 
 //          {5, 2, 0, 0, 0, 0, 0, 0, 0}, 
@@ -32,47 +34,47 @@ using namespace std;
 #define N 9 
 
 bool isSafe(int board[N][N],int row, int col, int num) 
-    { 
-        for (int d = 0; d < N; d++)  
-        { 
-            if (board[row][d] == num) 
-                return false; 
-        } 
-  
-        for (int r = 0; r < N; r++)  
-        { 
-            if (board[r][col] == num)  
-                return false; 
-        }  
-        int s = (int)sqrt(N); 
-        int boxRowStart = row - row % s; 
-        int boxColStart = col - col % s; 
-  
-        for (int r = boxRowStart; 
-             r < boxRowStart + s; r++)  
-        { 
-            for (int d = boxColStart; d < boxColStart + s; d++)  
-            { 
-                if (board[r][d] == num)  
-                    return false; 
-            } 
-        } 
-        return true; 
-    } 
+{ 
+	for (int d = 0; d < N; d++)  //already num is present in the same colums
+	{ 
+	    if (board[row][d] == num) 
+		return false; 
+	} 
+
+	for (int r = 0; r < N; r++)  
+	{ 
+	    if (board[r][col] == num)  
+		return false; 
+	}  
+	int s = (int)sqrt(N); 
+	int boxRowStart = row - row % s; 
+	int boxColStart = col - col % s; 
+
+	for (int r = boxRowStart; 
+	     r < boxRowStart + s; r++)  
+	{ 
+	    for (int d = boxColStart; d < boxColStart + s; d++)  
+	    { 
+		if (board[r][d] == num)  
+		    return false; 
+	    } 
+	} 
+	return true; 
+} 
 
 bool solve(int board[N][N],int n) 
 { 
-	    int row = -1; 
+	int row = -1; 
         int col = -1; 
-        bool isEmpty = true; 
+        bool isEmpty = true; //to check if the sudoku is filled or not
         for (int i = 0; i < n; i++)  
         { 
             for (int j = 0; j < n; j++)  
             { 
                 if (board[i][j] == 0)  
                 { 
-                    row = i; 
-                    col = j; 
+                    row = i; //row for the empty cell we encounter
+                    col = j; //column for the empty cell we encounter
                     isEmpty = false; 
                     break; 
                 } 
@@ -81,18 +83,18 @@ bool solve(int board[N][N],int n)
                 break; 
         } 
   
-        if (isEmpty)  
+        if (isEmpty)  //since sudoku was filled
             return true; 
         
-        for (int num = 1; num <= n; num++)  
+        for (int num = 1; num <= n; num++)  //IMP....the numbers we fill must be bw [1,n]
         { 
-            if (isSafe(board, row, col, num))  
+            if (isSafe(board, row, col, num))  //if safe
             { 
-                board[row][col] = num; 
+                board[row][col] = num; //then update the empty cell
                 if (solve(board, n))  
-                    return true; 
+                    return true; //if sudoku gets filled
                 else 
-                    board[row][col] = 0; 
+                    board[row][col] = 0; //backtrack
             } 
         } 
         return false; 
@@ -109,18 +111,17 @@ void printGrid(int grid[N][N])
 } 
  
 
-
 int main() 
 { 
 	int grid[N][N] = { { 3, 0, 6, 5, 0, 8, 4, 0, 0 }, 
-					{ 5, 2, 0, 0, 0, 0, 0, 0, 0 }, 
-					{ 0, 8, 7, 0, 0, 0, 0, 3, 1 }, 
-					{ 0, 0, 3, 0, 1, 0, 0, 8, 0 }, 
-					{ 9, 0, 0, 8, 6, 3, 0, 0, 5 }, 
-					{ 0, 5, 0, 0, 9, 0, 6, 0, 0 }, 
-					{ 1, 3, 0, 0, 0, 0, 2, 5, 0 }, 
-					{ 0, 0, 0, 0, 0, 0, 0, 7, 4 }, 
-					{ 0, 0, 5, 2, 0, 6, 3, 0, 0 } }; 
+				{ 5, 2, 0, 0, 0, 0, 0, 0, 0 }, 
+				{ 0, 8, 7, 0, 0, 0, 0, 3, 1 }, 
+				{ 0, 0, 3, 0, 1, 0, 0, 8, 0 }, 
+				{ 9, 0, 0, 8, 6, 3, 0, 0, 5 }, 
+				{ 0, 5, 0, 0, 9, 0, 6, 0, 0 }, 
+				{ 1, 3, 0, 0, 0, 0, 2, 5, 0 }, 
+				{ 0, 0, 0, 0, 0, 0, 0, 7, 4 }, 
+				{ 0, 0, 5, 2, 0, 6, 3, 0, 0 } }; 
 	if (solve(grid,N) == true) 
 		printGrid(grid); 
 	else
