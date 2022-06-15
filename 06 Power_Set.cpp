@@ -14,7 +14,7 @@ public:
         temp.push_back(nums[i]);  //the number is considered
         solve(ans,temp,nums,i+1);
         
-        temp.pop_back();  //the number is not considered
+        temp.pop_back();  //the number is not considered...backtracking apporach
         solve(ans,temp,nums,i+1);
     }
   
@@ -26,4 +26,32 @@ public:
         return ans;   
     }
 };
+
+
+
+//RECURSIVE APPROACH:
+
+
+class Solution {
+public:
+    void solve(vector<vector<int>>&ans,vector<int> temp,vector<int>&nums,int i)  //1 major DIFFERENCE....here theres NO '&' with temp
+    {
+        if(i == nums.size())
+        {
+            ans.push_back(temp);
+            return;
+        }
+        solve(ans,temp,nums,i+1);  //consider without pushing nums[i]
+        temp.push_back(nums[i]);        
+        solve(ans,temp,nums,i+1);  //consider with nums[i]
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>>ans;
+        vector<int>temp;
+        solve(ans,temp,nums,0);
+        return ans;   
+    }
+};
+
+
 
